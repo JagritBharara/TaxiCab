@@ -52,7 +52,8 @@ const LocationSearchPanel = (props) => {
           key={index}
           onClick={() => {
             handleClick(index)
-            props.setVehiclePanelOpen(true)
+            props.setVehiclePanelOpen(true);
+            props.setPanelOpen(false);
             }}
           className={`flex justify-start border ${
             activeIndex === index ? 'border-black rounded-xl' : 'border-white'

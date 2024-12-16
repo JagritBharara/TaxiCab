@@ -3,6 +3,10 @@ import {useGSAP} from '@gsap/react'
 import gsap from 'gsap';
 import 'remixicon/fonts/remixicon.css'
 import LocationSearchPanel from '../components/LocationSearchPanel';
+import VehiclePanel from '../components/VehiclePanel';
+import ConfrimRide from '../components/ConfrimRide';
+import LookingForDriver from '../components/LookingForDriver';
+import WaitingForDriver from '../components/WaitingForDriver';
 
 
 const Home = () => {
@@ -11,8 +15,14 @@ const Home = () => {
     const [panelOpen, setPanelOpen] = useState(false);
     const panelRef = useRef(null);
     const vehiclePanelRef = useRef(null);
+    const confirmRidelRef = useRef(null);
     const panelCloserRef = useRef(null);
+    const vehicleFoundRef = useRef(null);
+    const waitingForDriverRef = useRef(null);
     const [vehiclePanelOpen,setVehiclePanelOpen] = useState(false);
+    const [confirmRidePanel,setConfirmRidePanel] = useState(false);
+    const [vehicleFound,setVehicleFound] = useState(false);
+    const [waitingForDriver,setWaitingForDriver] = useState(false);
 
     const submitHandler = (e) => {
         e.preventDefault();
@@ -52,6 +62,42 @@ const Home = () => {
         })
       }
     },[vehiclePanelOpen])
+
+    useGSAP(function(){
+      if(confirmRidePanel){
+        gsap.to(confirmRidelRef.current,{
+          transform:'translateY(0)'
+        })
+      }else{
+        gsap.to(confirmRidelRef.current,{
+          transform:'translateY(100%)'
+        })
+      }
+    },[confirmRidePanel])
+
+    useGSAP(function(){
+      if(vehicleFound){
+        gsap.to(vehicleFoundRef.current,{
+          transform:'translateY(0)'
+        })
+      }else{
+        gsap.to(vehicleFoundRef.current,{
+          transform:'translateY(100%)'
+        })
+      }
+    },[vehicleFound])
+
+    useGSAP(function(){
+      if(waitingForDriver){
+        gsap.to(waitingForDriverRef.current,{
+          transform:'translateY(0)'
+        })
+      }else{
+        gsap.to(waitingForDriverRef.current,{
+          transform:'translateY(100%)'
+        })
+      }
+    },[waitingForDriver])
 
     return (
         <div className="h-screen relative overflow-hidden">
@@ -99,31 +145,19 @@ const Home = () => {
             </div>
 
             <div ref={vehiclePanelRef} className='fixed w-full z-10 bottom-0 p-3 bg-white translate-y-full'>
-              <h3 className='text-2xl font-seimbold'>Choose a vehicle</h3>
-              <div className='flex w-full mb-2 p-3 border-2 active:border-black rounded-xl justify-center items-center '>
-                <img className='h-20 w-20 p-2' src='https://www.shutterstock.com/image-illustration/realistic-sport-car-isolated-on-600nw-2505680187.jpg'  />
-                <div className='ml-5 w-1/2'>
-                  <h4 className='font-medium'>Car <span><i className="ri-user-location-line"></i>4</span></h4>
-                  <h5>2 mins Away</h5>
-                </div>
-                <h3 className='text-xl font-semibold'>Rs200</h3>
-              </div>
-              <div className='flex w-full mb-2 p-3 border-2 active:border-black rounded-xl justify-center items-center '>
-                <img className='h-20 w-20 p-2' src='https://totalpngs.com//public/uploads/preview/yamaha-mt15-bike-png-1-11651302484xqtxryyfdv.png'  />
-                <div className='ml-5 w-1/2'>
-                  <h4 className='font-medium'>Moto <span><i className="ri-user-location-line"></i>1</span></h4>
-                  <h5>2 mins Away</h5>
-                </div>
-                <h3 className='text-xl font-semibold'>Rs50</h3>
-              </div>
-              <div className='flex w-full mb-2 p-3 border-2 active:border-black rounded-xl justify-center items-center '>
-                <img className='h-25 w-20 p-2' src='https://images.jdmagicbox.com/quickquotes/images_main/cng-auto-rickshaw-380251422-oz5um.png'  />
-                <div className='ml-5 w-1/2'>
-                  <h4 className='font-medium'>Auto <span><i className="ri-user-location-line"></i>3</span></h4>
-                  <h5>2 mins Away</h5>
-                </div>
-                <h3 className='text-xl font-semibold'>Rs100</h3>
-              </div>
+              <VehiclePanel confirmRidePanel={confirmRidePanel} setConfirmRidePanel={setConfirmRidePanel} setVehiclePanelOpen={setVehiclePanelOpen}/>
+            </div>
+
+            <div ref={confirmRidelRef} className='fixed py-6 w-full z-10 bottom-0 p-3 bg-white translate-y-full'>
+                <ConfrimRide setConfirmRidePanel={setConfirmRidePanel} setVehicleFound={setVehicleFound}/>
+            </div>
+
+            <div ref={vehicleFoundRef} className='fixed py-6 w-full z-10 bottom-0 p-3 bg-white translate-y-full'>
+              <LookingForDriver setVehicleFound={setVehicleFound}/>
+            </div>
+
+            <div ref={waitingForDriverRef} className='fixed py-6 w-full z-10 bottom-0 p-3 translate-y-full bg-white '>
+              <WaitingForDriver setWaitingForDriver={setWaitingForDriver} />
             </div>
 
         </div>
